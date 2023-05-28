@@ -1,0 +1,25 @@
+\chapter{Introducción}
+ Este reporte aborda la solución de un interesante problema relacionado con la construcción de palíndromos en un lenguaje binario. En este informe, describiré en detalle la estrategia que implementé para abordar el problema, así como los resultados obtenidos.\newline
+
+El objetivo de esta práctica fue desarrollar un programa capaz de generar palíndromos de manera aleatoria, con una longitud especificada por el usuario. Además, se proporcionó la opción de generar automáticamente palíndromos sin intervención del usuario. Para ello, se estableció una longitud máxima de 100,000 caracteres para los palíndromos generados.\newline
+
+El programa se diseñó para producir una salida en un archivo de texto, donde se especifica la regla seleccionada y la cadena resultante en cada etapa hasta llegar al palíndromo final. Con el fin de cumplir con los requisitos, se implementó una gramática libre de contexto con las siguientes reglas de producción:\newline
+
+\newline
+    \begin{enumerate}
+    \item $P -> e$
+    \newline
+    \item $P -> 0$
+    \newline
+    \item$P -> 1$
+    \newline
+    \item$P -> 0P0$
+    \newline
+    \item$P -> 1P1$
+    \newline
+    \end{enumerate}
+    
+   El enfoque utilizado para construir los palíndromos consistió en aplicar de forma recursiva las reglas de producción de la gramática. Cada vez que se seleccionaba una regla, se generaba aleatoriamente la parte correspondiente del palíndromo. Este proceso continuaba hasta que se alcanzaba la longitud deseada\newline
+
+Para facilitar la comprensión del informe, se proporciona el código de implementación en formato LaTeX, asegurando su legibilidad y accesibilidad.
+

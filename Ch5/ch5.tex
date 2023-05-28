@@ -1,0 +1,164 @@
+\chapter{Anexos}
+\lstset{
+    language=C,
+    basicstyle=\ttfamily\small\color{black},
+    numbers=left,
+    numberstyle=\tiny,
+    stepnumber=1,
+    numbersep=8pt,
+    backgroundcolor=\color{white},
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    frame=single,
+    rulecolor=\color{magenta},
+    tabsize=2,
+    captionpos=b,
+    breaklines=true,
+    breakatwhitespace=false,
+    title=\lstname,
+    escapeinside={\%*}{*)},
+    keywordstyle=\color{blue},
+    commentstyle=\color{red},
+    stringstyle=\color{orange},
+    morecomment=[l][\color{cyan}]{\#},
+    otherkeywords={=,!,<,>,*,+,-,&,|,^,~},
+    numbers=left,                   % Coloca los números de línea a la izquierda
+    numberstyle=\tiny\color{black}, % Estilo de los números de línea
+    stepnumber=1,    % Incremento en el que se muestran los números de línea
+    numbersep=8pt
+}
+
+\section{Palindromo.py}
+Se presenta el código implementado para la solución al problema con extensión .py.\newline
+\\
+\begin{lstlisting}
+
+import random
+
+def generar_palindromo(longitud):
+    reglas = {
+        0: "e",
+        1: "0",
+        2: "1",
+        3: "0P0",
+        4: "1P1"
+    }
+    j=0
+    cantidad_cadena=0
+    cadena_actual=""
+    cadena_vieja=""
+    cambiante=0
+    bandera_primera_pasada=1
+    paso=1
+    while j==0:
+        if cantidad_cadena == longitud:
+            if longitud>0:
+                #Reemplazamos P por e
+                regla=reglas[0]
+                cadena_actual = cadena_vieja.replace("P", regla)
+                guardar_en_archivo2(cadena_actual,str(0),paso)
+                cantidad_cadena+=2
+                paso+=1
+            else:
+                #condicional para cuando cadena=0
+                cadena_actual= reglas[0]
+                guardar_en_archivo2(cadena_actual,str(0),paso)
+                paso+=1
+            j=1
+        elif (cantidad_cadena+2) > longitud:
+            if longitud>1:
+                cambiante=random.randint(1, 2)
+                regla= reglas[cambiante] 
+                cadena_actual = cadena_vieja.replace("P", regla)
+                guardar_en_archivo2(cadena_actual,str(cambiante),paso)
+                cantidad_cadena+=2
+                paso+=1
+            else:
+                #Condicional para cuando solo tengamos entrada de (1)
+                cambiante=random.randint(1, 2)
+                cadena_actual= reglas[cambiante]
+                guardar_en_archivo2(cadena_actual,str(cambiante),paso)
+                paso+=1
+            j=1
+        elif (cantidad_cadena+2) == longitud:
+            if longitud==2:
+                cambiante=random.randint(3, 4)
+                cadena_actual=reglas[cambiante]
+                guardar_en_archivo2(cadena_actual,str(cambiante),paso)
+                paso+=1
+            else:
+                cambiante=random.randint(3, 4)
+                regla= reglas[cambiante]
+                cadena_actual = cadena_vieja.replace("P", regla)
+                guardar_en_archivo2(cadena_actual,str(cambiante),paso)
+                paso+=1
+            cantidad_cadena+=2
+        elif (cantidad_cadena+2) < longitud:
+            if bandera_primera_pasada==1:
+                cambiante=random.randint(3, 4)
+                cadena_actual=reglas[cambiante]
+                guardar_en_archivo2(cadena_actual,str(cambiante),paso)
+                bandera_primera_pasada=0
+                paso+=1
+            else:
+                cambiante=random.randint(3, 4)
+                regla=reglas[cambiante]
+                cadena_actual= cadena_vieja.replace("P",regla)
+                guardar_en_archivo2(cadena_actual,str(cambiante),paso)
+                paso+=1
+            cantidad_cadena+=2
+        cadena_vieja=cadena_actual #Guardamos cadena que llevamos en la vieja.
+    cadena_actual=cadena_actual.replace("e","")
+    guardar_en_archivo2(cadena_actual,"e a vacio",paso)
+    palindromo = cadena_actual
+    return palindromo
+
+
+def guardar_en_archivo(longitud, regla, palindromo):
+    ruta_archivo = "C:\\Users\\soyco\\OneDrive\\Documents\\ESCOM\\sem4\\Teoria\\P2\\Pali\\output\\palindromos.txt"
+    with open(ruta_archivo , "w") as archivo:
+        archivo.write(f"Regla: {regla}\n")
+        archivo.write(f"Longitud: {longitud}\n")
+        archivo.write(f"Palindromo: {palindromo}\n\n")
+        
+def guardar_en_archivo2(cadena, regla, paso):
+    ruta_archivo = "C:\\Users\\soyco\\OneDrive\\Documents\\ESCOM\\sem4\\Teoria\\P2\\Pali\\output\\construccion.txt"
+    with open(ruta_archivo , "a") as archivo:     
+        archivo.write(f"Paso: [{paso}]")
+        archivo.write(f"--> (Regla {regla}):  {cadena}\n")
+def main():
+    opcion = input("Seleccione una opción:\n1. Ingresar longitud del palíndromo\n2. Generar automáticamente\n")
+    
+    if opcion == "1":
+        longitud = int(input("Ingrese la longitud del palíndromo: "))
+        if longitud <= 100000:
+            palindromo = generar_palindromo(longitud)
+            regla = "Longitud ingresada por el usuario"
+            guardar_en_archivo(longitud, regla, palindromo)
+            print("Palíndromo generado y guardado en el archivo 'palindromos.txt'.")
+            print("Construccion del palindromo generado y guardado en el archivo 'construccion.txt'.")
+        else:
+            print("La longitud ingresada excede el tamaño máximo permitido.")
+    elif opcion == "2":
+        longitud = random.randint(1, 100000)
+        palindromo = generar_palindromo(longitud)
+        regla = "Generación automática"
+        guardar_en_archivo(longitud, regla, palindromo)
+        print("Palíndromo generado y guardado en el archivo 'palindromos.txt'.")
+        print("Construccion del palindromo generado y guardado en el archivo 'construccion.txt'.")
+    else:
+        print("Opción inválida")
+
+if __name__ == "__main__":
+    ruta_archivo = "C:\\Users\\soyco\\OneDrive\\Documents\\ESCOM\\sem4\\Teoria\\P2\\Pali\\output\\construccion.txt"
+    with open(ruta_archivo , "w") as archivo:
+        print("Limpiamos archivo de construccion.")
+    main()
+
+\end{lstlisting}
+\section{GraficadorLineal.py}
+Se presenta el código LaTeX de este archivo mediante el siguiente link:\newline
+\\
+Link overleaf: $"$\url{https://www.overleaf.com/3364573574gdbzwhrghsmq}$"$\newline
+Link github: $"$\url{https://www.overleaf.com/3364573574gdbzwhrghsmq}$"$\newline
